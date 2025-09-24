@@ -46,7 +46,7 @@ def makeCourseFromRow(row, courseId):
                   termNum=termNum
                   )
 
-def populate():
+def deleteAndPopulate():
     with app.app_context():
         deleteAllCourses()
         currId = 1

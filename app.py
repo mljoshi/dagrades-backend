@@ -2,7 +2,7 @@ from flask import request, jsonify
 from config import app, db
 from models import Course
 from sqlalchemy import or_, and_
-from populate import populate
+from populate import deleteAndPopulate
 import os
 
 COURSES_PER_PAGE = 9
@@ -106,54 +106,10 @@ def getSimilarCourses(courseId):
     return jsonify(listData)
     
 
-# @app.route("/create_contact", methods=["POST"])
-# def createContact():
-#     data = request.json
-#     firstName = data.get("firstName")
-#     lastName = data.get("lastName")
-#     email = data.get("email")
-#     if not firstName or not lastName or not email:
-#         return (
-#             jsonify({"message": "You must include a first name, last name, and email"}),
-#             400,
-#             )
-#     newContact = Contact(firstName=firstName, lastName=lastName, email=email)
-#     try:
-#         db.session.add(newContact)
-#         db.session.commit()
-#     except Exception as e:
-#         return jsonify({"message": str(e)}), 400
-    
-#     return jsonify({"message": "User created!"}), 201
+with app.app_context():
+    db.create_all()
 
-# # ex /update_contact/9. Note that userId matches
-# @app.route("/update_contact/<int:userId>", methods=["PATCH"])
-# def updatContact(userId):
-#     contact = Contact.query.get(userId)
-
-#     if not contact:
-#         return jsonify({"message": "User not found"}), 404
-#     data = request.json
-#     contact.firstName = data.get("firstName", contact.firstName)
-#     contact.lastName = data.get("lastName", contact.lastName)
-#     contact.email = data.get("email", contact.email)
-
-#     db.session.commit()
-
-#     return jsonify({"message": "Contact updated!"}), 200
-
-# @app.route("/delete_contact/<int:userId>", methods=["DELETE"])
-# def deleteContact(userId):
-#     contact = Contact.query.get(userId)
-#     if not contact:
-#         return jsonify({"message": "User not found"}), 404
-#     db.session.delete(contact)
-#     db.session.commit()
-
-#     return jsonify({"message": "User deleted!"}), 200
+deleteAndPopulate()
 
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
-    populate()
     app.run(debug=DEBUG_MODE, port=PORT_NUM)
