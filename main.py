@@ -3,11 +3,12 @@ from config import app, db
 from models import Course
 from sqlalchemy import or_, and_
 from populate import populate
+import os
 
 COURSES_PER_PAGE = 9
 SECTION_SPLITTER = ":"
-DEBUG_MODE = False
-PORT_NUM = 8080
+DEBUG_MODE = os.environ.get('DEBUG', 'False').lower() == 'true'
+PORT_NUM = int(os.environ.get('PORT', 8080))
 
 def getGeneralCourseSection(sectionName):
     lastSplitterInd = sectionName.rfind(SECTION_SPLITTER)
@@ -155,7 +156,4 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
     populate()
-    if DEBUG_MODE:
-        app.run(debug=DEBUG_MODE, port=PORT_NUM)
-    else:
-        app.run(debug=DEBUG_MODE)
+    app.run(debug=DEBUG_MODE, port=PORT_NUM)
