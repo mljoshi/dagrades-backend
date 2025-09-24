@@ -6,12 +6,19 @@ from populate import deleteAndPopulate
 import os
 from dotenv import load_dotenv
 
+# When adding new data,
+# change the REFRESH_DB environment variable to True
+# (in Render for prod/in .env for dev).
+# Change it back to False in prod when done.
+
+
 load_dotenv()
 
 DEBUG_MODE = os.environ.get('DEBUG', 'False').lower() == 'true'
 PORT_NUM = int(os.environ.get('PORT', 8080))
 COURSES_PER_PAGE = 9
 SECTION_SPLITTER = ":"
+SHOULD_REFRESH_DB = os.environ.get('REFRESH_DB', 'True').lower() == 'true'
 
 def getGeneralCourseSection(sectionName):
     lastSplitterInd = sectionName.rfind(SECTION_SPLITTER)
@@ -112,7 +119,8 @@ def getSimilarCourses(courseId):
 with app.app_context():
     db.create_all()
 
-deleteAndPopulate()
+if SHOULD_REFRESH_DB:
+    deleteAndPopulate()
 
 if __name__ == "__main__":
     app.run(debug=DEBUG_MODE, port=PORT_NUM)

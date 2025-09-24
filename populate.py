@@ -44,6 +44,7 @@ def makeCourseFromRow(row, courseId):
                   )
 
 def deleteAndPopulate():
+    print("Refreshing database from files...")
     with app.app_context():
         deleteAllCourses()
         currId = 1
