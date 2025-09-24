@@ -4,11 +4,14 @@ from models import Course
 from sqlalchemy import or_, and_
 from populate import deleteAndPopulate
 import os
+from dotenv import load_dotenv
 
-COURSES_PER_PAGE = 9
-SECTION_SPLITTER = ":"
+load_dotenv()
+
 DEBUG_MODE = os.environ.get('DEBUG', 'False').lower() == 'true'
 PORT_NUM = int(os.environ.get('PORT', 8080))
+COURSES_PER_PAGE = 9
+SECTION_SPLITTER = ":"
 
 def getGeneralCourseSection(sectionName):
     lastSplitterInd = sectionName.rfind(SECTION_SPLITTER)

@@ -5,11 +5,8 @@ import csv
 
 # If the Course class is updated, this file must be updated as well
 
-# TODO: Optimize deletion
 def deleteAllCourses():
-    allCourses = Course.query.all()
-    for course in allCourses:
-        db.session.delete(course)
+    Course.query.delete()
     db.session.commit()
 
 def makeCourseFromRow(row, courseId):
